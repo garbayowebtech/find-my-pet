@@ -4,7 +4,9 @@ import TinderCard from 'react-tinder-card'
 import { DB } from '../lib/db'
 
 const SPECIES_EMOJI = { cachorro: '🐕', gato: '🐈' }
-const DEFAULT_FILTERS = { species: '', sex: '', size: '' }
+const BREEDS_DOG = ['SRD (Vira-lata)', 'Labrador', 'Golden Retriever', 'Bulldog', 'Poodle', 'Beagle', 'Shih Tzu', 'Pinscher', 'Lhasa Apso', 'Yorkshire', 'Dachshund', 'Border Collie', 'Pastor Alemão', 'Rottweiler', 'Husky Siberiano', 'Outra']
+const BREEDS_CAT = ['SRD (Vira-lata)', 'Persa', 'Siamês', 'Maine Coon', 'Angorá', 'Bengal', 'Ragdoll', 'British Shorthair', 'Scottish Fold', 'Sphynx', 'Outra']
+const DEFAULT_FILTERS = { species: '', breed: '', sex: '', size: '', age: '', ok_children: '', ok_animals: '' }
 
 export default function AdoptPage({ session }) {
   const navigate = useNavigate()
@@ -173,10 +175,24 @@ export default function AdoptPage({ session }) {
               <label>Espécie</label>
               <div className="radio-group">
                 {[['', 'Todos'], ['cachorro', '🐕 Cachorro'], ['gato', '🐈 Gato']].map(([v, l]) => (
-                  <div key={v} className={`radio-pill ${filters.species === v ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, species: v }))}>{l}</div>
+                  <div key={v} className={`radio-pill ${filters.species === v ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, species: v, breed: '' }))}>{l}</div>
                 ))}
               </div>
             </div>
+            
+            {filters.species && (
+              <div className="form-group">
+                <label>Raça</label>
+                <div className="scrollable-radio-wrapper" style={{ maxHeight: '120px' }}>
+                  <div className="radio-group">
+                    <div className={`radio-pill ${filters.breed === '' ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, breed: '' }))}>Todas</div>
+                    {(filters.species === 'cachorro' ? BREEDS_DOG : BREEDS_CAT).map(b => (
+                      <div key={b} className={`radio-pill ${filters.breed === b ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, breed: b }))}>{b}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="form-group">
               <label>Sexo</label>
               <div className="radio-group">
@@ -190,6 +206,33 @@ export default function AdoptPage({ session }) {
               <div className="radio-group">
                 {[['', 'Todos'], ['micro', 'Micro'], ['pequeno', 'Pequeno'], ['médio', 'Médio'], ['grande', 'Grande']].map(([v, l]) => (
                   <div key={v} className={`radio-pill ${filters.size === v ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, size: v }))}>{l}</div>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Idade (anos)</label>
+              <div className="radio-group">
+                {[['', 'Todos'], ['1','1'], ['2','2'], ['3','3'], ['4','4'], ['5','5'], ['6','6'], ['7','7'], ['8','8+']].map(([v, l]) => (
+                  <div key={v} className={`radio-pill ${filters.age === v ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, age: v }))}>{l}</div>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Se dá bem com crianças?</label>
+              <div className="radio-group">
+                {[['', 'Todos'], ['sim', '✅ Sim'], ['nao', '❌ Não'], ['tanto_faz', '🤷 Tanto faz']].map(([v, l]) => (
+                  <div key={v} className={`radio-pill ${filters.ok_children === v ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, ok_children: v }))}>{l}</div>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Se dá bem com outros animais?</label>
+              <div className="radio-group">
+                {[['', 'Todos'], ['sim', '✅ Sim'], ['nao', '❌ Não'], ['tanto_faz', '🤷 Tanto faz']].map(([v, l]) => (
+                  <div key={v} className={`radio-pill ${filters.ok_animals === v ? 'selected' : ''}`} onClick={() => setFilters(f => ({ ...f, ok_animals: v }))}>{l}</div>
                 ))}
               </div>
             </div>

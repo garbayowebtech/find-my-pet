@@ -85,10 +85,12 @@ export const DB = {
       .order('created_at', { ascending: false })
 
     if (filters.species) query = query.eq('species', filters.species)
+    if (filters.breed) query = query.eq('breed', filters.breed)
     if (filters.sex) query = query.eq('sex', filters.sex)
     if (filters.size) query = query.eq('size', filters.size)
-    if (filters.ok_children !== undefined) query = query.eq('ok_children', filters.ok_children)
-    if (filters.ok_animals !== undefined) query = query.eq('ok_animals', filters.ok_animals)
+    if (filters.age) query = query.eq('age', parseInt(filters.age))
+    if (filters.ok_children) query = query.eq('ok_children', filters.ok_children)
+    if (filters.ok_animals) query = query.eq('ok_animals', filters.ok_animals)
 
     const { data, error } = await query
     if (error) throw error

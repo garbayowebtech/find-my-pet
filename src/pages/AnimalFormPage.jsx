@@ -166,10 +166,9 @@ export default function AnimalFormPage({ session }) {
           {/* Breed */}
           <div className="form-group">
             <label>Raça</label>
-            <select className="form-control" value={form.breed} onChange={e => set('breed')(e.target.value)}>
-              <option value="">Selecione...</option>
-              {breedList.map(b => <option key={b} value={b}>{b}</option>)}
-            </select>
+            <div className="scrollable-radio-wrapper">
+              <RadioPills options={breedList.map(b => [b, b])} value={form.breed} onChange={set('breed')} />
+            </div>
           </div>
 
           {/* Sex */}
